@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cart - Shoppy.in</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <h2 class="logo">🛍️ Shoppy<span>.in</span></h2>
+    <a href="store.html" class="cart-btn">🛒 Go to Store</a>
+  </header>
+
+  <h2 class="store-title">Your Cart</h2>
+  <div class="product-grid" id="cartList"></div>
+
+  <script>
+    const cartList = document.getElementById("cartList");
+    let cart = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+    function displayCart() {
+      cartList.innerHTML = "";
+      if (cart.length === 0) {
+        cartList.innerHTML = "<h3>Your cart is empty</h3>";
+        return;
+      }
+      cart.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+          <img src="${item.image}" />
+          <h3>${item.name}</h3>
+          <p>$${item.price} × ${item.quantity}</p>
+          <button onclick="buyNow(${index})">Buy Now</button>
+        `;
+        cartList.appendChild(div);
+      });
+    }
+
+    function buyNow(index) {
+      cart.splice(index, 1);
+      localStorage.setItem("cartItems", JSON.stringify(cart));
+      displayCart();
+      alert("Your order placed successfully!");
+    }
+
+    displayCart();
+  </script>
+</body>
+</html>
